@@ -15,12 +15,19 @@ services:
 
   portainer:
     image: portainer/portainer-ce:latest
-    command: -H tcp://tasks.agent:9001 --tlsskipverify
+    command:
+      - -H tcp://tasks.agent:9001 --tlsskipverify
+      - --ssl
+      - --sslcert
+      - /certs/fullchain.pem
+      - --sslkey
+      - /certs/privkey.pem
     ports:
       - "9443:9443"
       - "9000:9000"
       - "8000:8000"
     volumes:
+      - ./certs:/certs
       - portainer_data:/data
     networks:
       - agent_network
